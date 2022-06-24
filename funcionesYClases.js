@@ -7,11 +7,10 @@ class Categoria {
 }
 
 class Gasto {
-  constructor(idGasto, nombreGasto, montoGasto, fechaGasto) {
+  constructor(idGasto, nombreCategoria, montoGasto) {
     this.idGasto = idGasto;
-    this.nombreGasto = nombreGasto;
+    this.nombreCategoria = nombreCategoria;
     this.montoGasto = montoGasto;
-    this.fechaGasto = fechaGasto;
   }
 }
 
@@ -29,4 +28,8 @@ function cargarCategoriasPredeterminadas() {
   listaCategorias.push(new Categoria(3, "Restaurantes", 0));
   listaCategorias.push(new Categoria(4, "Medicamentos", 0));
   listaCategorias.push(new Categoria(5, "Educación", 0));
+}
+
+function traerNombreCategoria(idCategoria) {
+  return listaCategorias[idCategoria - 1].nombreCategoria;
 }

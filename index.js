@@ -16,14 +16,10 @@ let inputInt; //Input parseado a Int
 let stringCategoriasBody =
   "\n1. Ocio\n2. Mercado\n3. Restaurantes\n4. Medicamentos\n5. Educación";
 let stringPostBody =
-  '\n\n- Ingresa "AGREGAR" para añadir una categoría.\n- Ingresa "SALIR" para salir de la aplicación.';
-
-let promptSalario = "Ingresa tu salario:" + stringPostBody;
-let promptMontoGasto = "Paso 2 - Ingresa el monto del gasto:" + stringPostBody;
-let promptCategoria =
-  "Paso 3 - Ingresa el número de la categoría de tu gasto:\n" +
-  stringCategoriasBody +
-  stringPostBody;
+  '\n\n- Ingresa "GASTOS" para revisar tus gastos individuales.\n- Ingresa "AGREGAR" para añadir una categoría.\n- Ingresa "SALIR" para salir de la aplicación.';
+let promptSalario = `Ingresa tu salario:${stringPostBody}`;
+let promptMontoGasto = `Paso 2 - Ingresa el monto del gasto:${stringPostBody}`;
+let promptCategoria = `Paso 3 - Ingresa el número de la categoría de tu gasto:\n${stringCategoriasBody}${stringPostBody}`;
 
 // Declaración de arreglo para pasos del proceso
 let listaPromptPasos = [promptSalario, promptMontoGasto, promptCategoria];
@@ -40,6 +36,9 @@ const datosPerfil = [0, 0, 0];
 const listaCategorias = [];
 // Push de categorías iniciales al arreglo de categorías
 cargarCategoriasPredeterminadas();
+
+//Declaración de arreglo para gastos individuales
+const listaGastos = [];
 
 // Se itera sobre datos del perfil actual (salario, montoGasto, idCategoria)
 for (let i = 0; i < datosPerfil.length; i++) {
@@ -79,6 +78,23 @@ for (let i = 0; i < datosPerfil.length; i++) {
     continue;
   }
 
+  // Se valida input para ver si el usuario desea revisar los gastos individuales registrados
+  if (datosPerfil[i].toLowerCase() == "gastos") {
+    let stringListaGastos = "";
+
+    for (j = 0; j < listaGastos.length; j++) {
+      stringListaGastos += `ID: ${listaGastos[j].idGasto} - ${
+        listaGastos[j].nombreCategoria
+      } - ${formatter.format(listaGastos[j].montoGasto)}\n`;
+    }
+
+    alert(
+      `Estos son tus gastos individuales realizados hasta el momento:\n\n${stringListaGastos}`
+    );
+    i--;
+    continue;
+  }
+
   // Se valida input para ver si el usuario ingresó un valor inválido
   if (isNaN(inputInt) || inputInt <= 0) {
     alert(
@@ -104,26 +120,30 @@ for (let i = 0; i < datosPerfil.length; i++) {
     // Se asigna el monto del gasto a la categoría elegida
     listaCategorias[inputInt - 1].montoCategoria = datosPerfil[1];
 
+    // Se guarda un registro del gasto realizado en el arreglo de gastos individuales
+    listaGastos.push(
+      new Gasto(
+        listaGastos.length + 1,
+        traerNombreCategoria(datosPerfil[2]),
+        datosPerfil[1]
+      )
+    );
+
     // Se construye string de lista de categorías para mostrar los gastos realizados en cada categoría
     let stringListaCategorias = "";
 
     for (j = 0; j < listaCategorias.length; j++) {
-      stringListaCategorias +=
-        listaCategorias[j].nombreCategoria +
-        ": " +
-        formatter.format(listaCategorias[j].montoCategoria) +
-        "\n";
+      stringListaCategorias += `${
+        listaCategorias[j].nombreCategoria
+      }: ${formatter.format(listaCategorias[j].montoCategoria)}\n`;
     }
 
     gastoTotal += parseInt(datosPerfil[1]);
 
     alert(
-      "Estos son tus gastos actuales hasta el momento:\n\n" +
-        stringListaCategorias +
-        "\nGasto total: " +
-        formatter.format(gastoTotal) +
-        "\nSalario: " +
-        formatter.format(datosPerfil[0])
+      `Estos son tus gastos actuales hasta el momento:\n\n${stringListaCategorias}\nGasto total: ${formatter.format(
+        gastoTotal
+      )}\nSalario: ${formatter.format(datosPerfil[0])}`
     );
 
     if (gastoTotal > datosPerfil[0]) {
