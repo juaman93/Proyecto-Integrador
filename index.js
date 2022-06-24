@@ -64,7 +64,7 @@ for (let i = 0; i < datosPerfil.length; i++) {
       new Categoria(listaCategorias.length + 1, nuevaCategoria, 0)
     );
 
-    //Se reconstruye el string de opciones de categorías a escoger
+    // Se reconstruye el string de opciones de categorías a escoger
     stringCategoriasBody = "";
     for (j = 0; j < listaCategorias.length; j++) {
       stringCategoriasBody += `\n${listaCategorias[j].idCategoria}. ${listaCategorias[j].nombreCategoria}`;
